@@ -1,0 +1,25 @@
+{
+  "name": "delivery-api",
+  "version": "1.0.0",
+  "description": "fetch the delivery info",
+  "scripts": {
+    "start": "nodemon app.js",
+    "deploy": "npm run build && aws lambda update-function-code --function-name delivery-request --zip-file fileb://build.zip --publish",
+    "clean": "rm build.zip",
+    "build": "zip -r build.zip node_modules index.js app.js routes.js"
+  },
+  "keywords": [
+    "micro-service"
+  ],
+  "author": "Shivathanu",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.586.0",
+    "aws-serverless-express": "^3.3.6",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "http": "0.0.0",
+    "nodemon": "^2.0.1",
+    "uuid": "^3.3.3"
+  }
+}
