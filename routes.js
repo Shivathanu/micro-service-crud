@@ -1,10 +1,11 @@
 const AWS = require('aws-sdk');
 const express = require('express');
 const router = express.Router();
-const DELIVERY_TABLE = process.env.TABLE;
+const DELIVERY_TABLE = process.env.TABLE || 'DeliveryRequest';
 const IS_OFFLINE = process.env.NODE_ENV !== "production";
 const uuid = require('uuid');
-const dynamoDb = IS_OFFLINE === true ? new AWS.DynamoDB.DocumentClient({
+const dynamoDb = IS_OFFLINE === true ?
+    new AWS.DynamoDB.DocumentClient({
         apiVersion: "2019-12-10",
         region: "us-west-2",
         endpoint: "https://dynamodb.us-west-2.amazonaws.com"
@@ -32,7 +33,7 @@ router.get('/deliveryrequests/:id', (request, response) => {
                 error: error
             });
         }
-        if (result.length > 0) {
+        if (result) {
             response.json(result.Item);
         } else {
             response.json({
@@ -71,18 +72,22 @@ router.get('/deliveryrequests', (request, response) => {
  * @param {Object} response
  */
 router.post('/deliveryrequests', (request, response) => {
-    const { OrderId, Service, DeliveryDate, ...rest } = request.body;
+    const { OrderId, ServiceId, DeliveryDate, Status, StatusDate, ...rest } = request.body;
     const DeliveryRequestId = uuid();
     const params = {
-        TableName: DELIVERY_TABLE,
-        Item: {
-            OrderId: OrderId,
-            Service: Service,
-            DeliveryDate: DeliveryDate,
-            DeliveryRequestId: DeliveryRequestId,
-            ...rest
-        }
-    };
+			TableName: DELIVERY_TABLE,
+			Item: {
+				OrderId: OrderId,
+				ServiceId: ServiceId,
+				Status: "New",
+				StatusDate: new Date()
+					.toISOString()
+					.replace("T", " ")
+					.replace("Z", ""),
+				DeliveryRequestId: DeliveryRequestId,
+				...rest
+			}
+		};
     dynamoDb.put(params, (error, result) => {
         if (error) {
             console.log('error: ', error);
