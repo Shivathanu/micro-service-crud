@@ -8,6 +8,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(awsServerlessExpressMiddleware.eventContext());
+var swaggerUi = require("swagger-ui-express");
+var apiDoc = require("./docs/index.js");
 
 // start of test code -- Line 14 to 51 is commented, should be enabled for running the code locally
 // var http = require("http");
@@ -51,6 +53,7 @@ app.use(awsServerlessExpressMiddleware.eventContext());
 
 // end of test code
 
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(apiDoc));
 app.use('/', routes);
 
 module.exports = app;
