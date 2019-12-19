@@ -2,23 +2,23 @@ const express = require('express')
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-// var http = require("http");
-const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
+const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
 const routes = require('./routes');
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(awsServerlessExpressMiddleware.eventContext());
 
+// start of test code -- Line 14 to 51 is commented, should be enabled for running the code locally
+// var http = require("http");
 // var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
+// /**
+//  * Listen on provided port, on all network interfaces.
+//  */
 // var port = normalizePort(process.env.PORT || "3030");
-/**
- * Normalize a port into a number, string, or false.
- */
+// /**
+//  * Normalize a port into a number, string, or false.
+//  */
 // function normalizePort(val) {
 //     var port = parseInt(val, 10);
 
@@ -48,6 +48,9 @@ app.use(awsServerlessExpressMiddleware.eventContext());
 // server.listen(port);
 // server.on("listening", onListening);
 // server.timeout = 240000;
+
+// end of test code
+
 app.use('/', routes);
 
 module.exports = app;

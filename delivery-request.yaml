@@ -6,9 +6,8 @@ info:
   title: Delivery Requests Server
 servers:
 # Added by development team
-# Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/Shivathanu/delivery-request/3
+    url: https://virtserver.swaggerhub.com/Arjun/delivery-request/3
   - description: Delivery Requests service
     url: delivery api
 tags:
@@ -18,84 +17,99 @@ paths:
   /deliveryrequests:
     servers:
     - url: 'https://v25tmr7umf.execute-api.us-west-2.amazonaws.com/prod/'
-    put:
-      tags:
-        - Delivery Requests
-      description: 'Update a Delivery Requests'
-      requestBody:
-        description: Delivery Requests information
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DeliveryRequests'
-            example:
-              DeliveryRequestId: '04b04dad-bd7b-409b-b131-ebbfbd1a5881'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              example:
-                DeliveryRequestId: '04b04dad-bd7b-409b-b131-ebbfbd1a5881'
     post:
       tags:
         - Delivery Requests
-      summary: Fetch all the delivery requests
-      description: Creates the delivery request
+      summary: Creates a delivery request
+      description: Creates a delivery request using the input provided
       operationId: postDeliveryRequests
       responses:
-        '405':
-          description: Invalid input
         '200':
           description: successful operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Invalid input
+        '404':
+          description: Not Found
       requestBody:
         $ref: '#/components/requestBodies/DeliveryRequests'
     get:
       tags:
         - Delivery Requests
-      summary: Find delivery requests
-      description: Returns all the delivery requests
+      summary: Fetch delivery requests
+      description: Returns all the delivery requests from the system
       operationId: getDeliveryRequests
       responses:
         '200':
           description: successful operation
         '400':
-          description: Invalid ID supplied
+          description: Invalid input
         '404':
-          description: Delivery not found
+          description: Not Found
   /deliveryrequests/{id}:
     servers:
     - url: 'https://v25tmr7umf.execute-api.us-west-2.amazonaws.com/prod/'
     parameters:
       - name: id
         in: path
-        description: deliveryrequests ID
+        description: ID of the Delivery Request
         required: true
         schema:
           type: string
           format: int64
     get:
       tags:
-        - DeliveryRequests
-      description: Get deliveryrequests by id
+        - Delivery Requests
+      summary: Get a Delivery Request by id
+      description: Get delivery request by id
+      operationId: getDeliveryRequestById
       responses:
         '200':
           description: OK
-    delete:
+          content:
+            application/json:
+              example: { "success": true }
+        '400':
+          description: Invalid input
+        '404':
+          description: Not Found
+    patch:
       tags:
-        - DeliveryRequests
-      description: 'Delete a deliveryrequests'
+        - Delivery Requests
+      summary: Update a Delivery Request by id
+      description: Update delivery request by id
+      operationId: updateDeliveryRequestById
       responses:
-        '204':
+        '200':
           description: OK
           content:
             application/json:
-              example:
+              example: { "success": true }
+        '400':
+          description: Invalid input
+        '404':
+          description: Not Found
+      requestBody:
+        $ref: '#/components/requestBodies/DeliveryRequests'
+    delete:
+      tags:
+        - Delivery Requests
+      summary: Delete a Delivery Request by id
+      description: Delete a delivery request by id
+      operationId: deleteDeliveryRequestById
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example: { "success": true }
+        '400':
+          description: Invalid input
+        '404':
+          description: Not Found
 components:
   schemas:
     DeliveryRequests:
@@ -107,11 +121,14 @@ components:
         ServiceId:
           type: integer
           format: int64
+        DeliveryDate:
+          type: string
+          example: "2000-01-01"
     ApiResponse:
       type: object
       properties:
         DeliveryRequestId:
-          type: string
+          example: "04b04dad-bd7b-409b-b131-ebbfbd1a5881"
   requestBodies:
     DeliveryRequests:
       content:
@@ -121,5 +138,6 @@ components:
           example:
             OrderId: 1
             ServiceId: 2
+            DeliveryDate: "2000-01-01"
       description: Delivery object that needs to be added to the store
       required: true
