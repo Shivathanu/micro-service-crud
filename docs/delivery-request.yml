@@ -5,18 +5,13 @@ info:
   version: "3"
   title: Delivery Requests Server
 servers:
-# Added by development team
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/Arjun/delivery-request/3
-  - description: Delivery Requests service
-    url: delivery api
+  - url: 'https://d1yxmwn8cd1bbv.cloudfront.net'
+  - url: 'http://d1yxmwn8cd1bbv.cloudfront.net'
 tags:
   - name: Delivery Requests
-    description: Everything about delivery requests
+    description: Everything about delivery requests operations
 paths:
   /deliveryrequests:
-    servers:
-    - url: 'https://v25tmr7umf.execute-api.us-west-2.amazonaws.com/prod/'
     post:
       tags:
         - Delivery Requests
@@ -50,8 +45,6 @@ paths:
         '404':
           description: Not Found
   /deliveryrequests/{id}:
-    servers:
-    - url: 'https://v25tmr7umf.execute-api.us-west-2.amazonaws.com/prod/'
     parameters:
       - name: id
         in: path
@@ -92,6 +85,8 @@ paths:
           description: Invalid input
         '404':
           description: Not Found
+        '307':
+          description: Temporary Redirect
       requestBody:
         $ref: '#/components/requestBodies/DeliveryRequests'
     delete:
