@@ -14,7 +14,7 @@
   "author": "Shivathanu",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.586.0",
+    "aws-sdk": "^2.814.0",
     "aws-serverless-express": "^3.3.6",
     "cors": "^2.8.5",
     "express": "^4.17.1",
